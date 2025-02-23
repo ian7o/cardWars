@@ -1,0 +1,83 @@
+:root{
+    --cartaHeight: 30vw;
+    --cartaWidth: 18vw;
+}
+
+p.cardNumber{
+    font-size: 3vw;
+    color: red;
+    margin: 0;
+}
+
+
+.hearts{
+width: 90%;
+}
+
+.itensUpsideDown{
+    transform: rotate(180deg);
+}
+
+.heartsuitSection{
+    display: flex;
+    flex-wrap: wrap;
+}
+.whiteSpacer{
+    width: 90;
+}
+
+section.cardContainer{
+    padding: 1%;
+    display: flex;
+    margin: 0.3vw;
+    flex-direction: row;
+    background-color: rgb(255, 255, 255);
+    border: 3px solid red;
+    height: var(--cartaHeight);
+    width: var(--cartaWidth);
+    border-radius: 5%;
+}
+
+.firstColumn{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: var(--cartaHeight);
+    width: 12.5%;
+}
+
+.secndColumn{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    align-self: center;
+    height: 90%;
+    width: 25%;
+}
+.thirdColumn{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-around;
+    align-self: center;
+    height: 90%;
+    width: 25%;
+}
+
+.fourtColumn{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    align-self: center;
+    height: 90%;
+    width: 25%;
+}
+.fifthColumn{
+    display: flex;
+    align-items: center;
+    flex-direction: column-reverse;
+    
+    width: 12.5%;
+}
