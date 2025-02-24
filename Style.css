@@ -23,7 +23,8 @@ width: 90%;
     flex-wrap: wrap;
 }
 .whiteSpacer{
-    width: 90;
+    width: 90%;
+    opacity: 0;
 }
 
 section.cardContainer{
@@ -55,6 +56,7 @@ section.cardContainer{
     height: 90%;
     width: 25%;
 }
+
 .thirdColumn{
     display: flex;
     align-items: center;
@@ -63,6 +65,15 @@ section.cardContainer{
     align-self: center;
     height: 90%;
     width: 25%;
+}
+section.thirdColumn>img[data-specialHeart="1"]{
+    position: relative;
+    top: 24.5%;
+}
+
+section[data-specialColumn="1"]{
+    display: flex;
+    justify-content: space-between;
 }
 
 .fourtColumn{
@@ -78,6 +89,5 @@ section.cardContainer{
     display: flex;
     align-items: center;
     flex-direction: column-reverse;
-    
     width: 12.5%;
 }
