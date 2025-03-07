@@ -1,10 +1,17 @@
 :root{
-    --cartaHeight: 30vw;
-    --cartaWidth: 18vw;
+    /*
+    antes 15
+    e 9
+    */
+    --cartaHeight: 10vw;
+    --cartaWidth: 6vw;
+    --firstAndLastCardColumnWidth:12.5%;
+    --cardMidleColumns: 25%;
+    --cardMidleColumnsHeight:90%;
 }
 
 p.cardNumber{
-    font-size: 3vw;
+    font-size: calc(var(--cartaWidth) / 6);
     color: red;
     margin: 0;
 }
@@ -22,29 +29,27 @@ width: 90%;
     display: flex;
     flex-wrap: wrap;
 }
-.whiteSpacer{
-    width: 90%;
-    opacity: 0;
-}
 
-section.cardContainer{
+.cardContainer{
     padding: 1%;
     display: flex;
     margin: 0.3vw;
     flex-direction: row;
     background-color: rgb(255, 255, 255);
-    border: 3px solid red;
+    border: 3px solid red; 
     height: var(--cartaHeight);
     width: var(--cartaWidth);
     border-radius: 5%;
 }
 
+
+
 .firstColumn{
     display: flex;
-    align-items: center;
     flex-direction: column;
+    align-items: center;
     height: var(--cartaHeight);
-    width: 12.5%;
+    width: var(--firstAndLastCardColumnWidth);
 }
 
 .secndColumn{
@@ -53,41 +58,43 @@ section.cardContainer{
     align-items: center;
     justify-content: space-between;
     align-self: center;
-    height: 90%;
-    width: 25%;
+    height: var(--cardMidleColumnsHeight);
+    width: var(--cardMidleColumns);
 }
 
 .thirdColumn{
     display: flex;
-    align-items: center;
     flex-direction: column;
+    align-items: center;
     justify-content: space-around;
     align-self: center;
-    height: 90%;
-    width: 25%;
-}
-section.thirdColumn>img[data-specialHeart="1"]{
-    position: relative;
-    top: 24.5%;
+    height: var(--cardMidleColumnsHeight);
+    width: var(--cardMidleColumns);
 }
 
-section[data-specialColumn="1"]{
-    display: flex;
-    justify-content: space-between;
+
+img[data-specialHeart="1"]{
+    position: relative;
+    top: 15%;
+}
+
+img[data-specialHeart="2"]{
+    position: relative;
+    bottom: 25%;
 }
 
 .fourtColumn{
     display: flex;
-    align-items: center;
     flex-direction: column;
+    align-items: center;
     justify-content: space-between;
     align-self: center;
-    height: 90%;
-    width: 25%;
+    height: var(--cardMidleColumnsHeight);
+    width: var(--cardMidleColumns);
 }
 .fifthColumn{
     display: flex;
-    align-items: center;
     flex-direction: column-reverse;
-    width: 12.5%;
+    align-items: center;
+    width: var(--firstAndLastCardColumnWidth);
 }
