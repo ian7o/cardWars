@@ -1,98 +1,100 @@
 :root{
     /*
-    antes 15
-    e 9
+    antes cardHeight 15vw
+    e cardWidth 9vw
     */
-    --cartaHeight: 10vw;
-    --cartaWidth: 6vw;
+    --cardHeight: 10vw;
+    --cardWidth: 6vw;
     --firstAndLastCardColumnWidth:12.5%;
-    --cardMidleColumns: 25%;
+    --cardMidleColumnsWidth: 25%;
     --cardMidleColumnsHeight:90%;
 }
 
 p.cardNumber{
-    font-size: calc(var(--cartaWidth) / 6);
+    font-size: calc(var(--cardWidth) / 6);
     color: red;
     margin: 0;
 }
 
-
-.hearts{
+.hearts,
+.diamonds,
+.clubs,
+.spades{
 width: 90%;
+}
+
+.king{
+    width: 190%;
+}
+
+.queen{
+    width: 300%;
+}
+
+.jack{
+    width: 350%;
 }
 
 .itensUpsideDown{
     transform: rotate(180deg);
 }
 
-.heartsuitSection{
+.heartsuit,
+.diamondSuit,
+.clubsSuit,
+.spadesSuit{
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 }
 
+
+
 .cardContainer{
-    padding: 1%;
+    padding: 0.5%;
     display: flex;
     margin: 0.3vw;
     flex-direction: row;
     background-color: rgb(255, 255, 255);
     border: 3px solid red; 
-    height: var(--cartaHeight);
-    width: var(--cartaWidth);
+    height: var(--cardHeight);
+    width: var(--cardWidth);
     border-radius: 5%;
 }
 
-
-
-.firstColumn{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: var(--cartaHeight);
-    width: var(--firstAndLastCardColumnWidth);
-}
-
-.secndColumn{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    align-self: center;
-    height: var(--cardMidleColumnsHeight);
-    width: var(--cardMidleColumns);
-}
-
-.thirdColumn{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-    align-self: center;
-    height: var(--cardMidleColumnsHeight);
-    width: var(--cardMidleColumns);
-}
-
-
 img[data-specialHeart="1"]{
-    position: relative;
-    top: 15%;
-}
-
-img[data-specialHeart="2"]{
     position: relative;
     bottom: 25%;
 }
 
-.fourtColumn{
+.card-column-small,
+.card-column-medium,
+.card-column-middle
+{
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: var(--firstAndLastCardColumnWidth);
+}
+
+.card-column-small{
+    width: var(--firstAndLastCardColumnWidth);
+}
+
+.card-column-middle{
+    justify-content: space-around;
+    align-self: center;
+    height: var(--cardMidleColumnsHeight);
+    width: var(--cardMidleColumnsWidth);
+}
+
+.card-column-medium{
     justify-content: space-between;
     align-self: center;
     height: var(--cardMidleColumnsHeight);
-    width: var(--cardMidleColumns);
+    width: var(--cardMidleColumnsWidth);
 }
-.fifthColumn{
+
+.Column-reversed{
     display: flex;
     flex-direction: column-reverse;
     align-items: center;
