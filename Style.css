@@ -1,102 +1,133 @@
-:root{
-    /*
-    antes cardHeight 15vw
-    e cardWidth 9vw
-    */
-    --cardHeight: 10vw;
-    --cardWidth: 6vw;
-    --firstAndLastCardColumnWidth:12.5%;
-    --cardMidleColumnsWidth: 25%;
-    --cardMidleColumnsHeight:90%;
+:root {
+  --cardHeight: 10vw;
+  --cardWidth: 6vw;
+  --firstAndLastCardColumnWidth: 12.5%;
+  --cardMidleColumnsWidth: 25%;
+  --cardMidleColumnsHeight: 90%;
 }
 
-p.cardNumber{
-    font-size: calc(var(--cardWidth) / 6);
-    color: red;
-    margin: 0;
+body {
+  background-color: green;
+}
+
+.gameTable {
+  margin: 20vw auto auto auto;
+  border: 3px solid red;
+  width: fit-content;
+}
+
+.UI {
+  display: flex;
+  justify-content: center;
+}
+
+.game {
+  display: flex;
+  flex-direction: row;
+  padding: 5vw 1vw 1vw 1vw;
+}
+
+p.cardNumber {
+  font-size: calc(var(--cardWidth) / 6);
+  color: red;
+  margin: 0;
 }
 
 .hearts,
 .diamonds,
 .clubs,
-.spades{
-width: 90%;
+.spades {
+  width: 90%;
 }
 
-.king{
-    width: 190%;
+.king {
+  width: 190%;
 }
 
-.queen{
-    width: 300%;
+.queen {
+  width: 300%;
 }
 
-.jack{
-    width: 350%;
+.jack {
+  width: 350%;
 }
 
-.itensUpsideDown{
-    transform: rotate(180deg);
+.itensUpsideDown {
+  transform: rotate(180deg);
 }
 
 .heartsuit,
 .diamondSuit,
 .clubsSuit,
-.spadesSuit{
-    display: flex;
-    flex-wrap: nowrap;
+.spadesSuit,
+.battleArea {
+  display: flex;
+  flex-wrap: wrap;
 }
 
-
-
-.cardContainer{
-    padding: 0.5%;
-    display: flex;
-    margin: 0.3vw;
-    flex-direction: row;
-    background-color: rgb(255, 255, 255);
-    border: 3px solid red; 
-    height: var(--cardHeight);
-    width: var(--cardWidth);
-    border-radius: 5%;
+.firstPlayerCards,
+.battleArea,
+.secondPlayerCards {
+  display: flex;
+  border: 3px solid white;
+  height: fit-content;
 }
 
-img[data-specialHeart="1"]{
-    position: relative;
-    bottom: 25%;
+.battleArea {
+  margin-left: 10vw;
+  margin-right: 10vw;
+  min-height: calc(var(--cardHeight));
+  max-height: fit-content;
+  width: calc(var(--cardWidth) * 2.48);
+}
+
+.cardContainer {
+  padding: 0.5%;
+  display: flex;
+  margin: 0.3vw;
+  flex-direction: row;
+  background-color: rgb(255, 255, 255);
+  border: 3px solid red;
+  height: var(--cardHeight);
+  width: var(--cardWidth);
+  border-radius: 5%;
+}
+
+img[data-specialHeart="1"] {
+  position: relative;
+  bottom: 25%;
 }
 
 .card-column-small,
 .card-column-medium,
-.card-column-middle
-{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: var(--firstAndLastCardColumnWidth);
+.card-column-middle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: var(--firstAndLastCardColumnWidth);
 }
 
-.card-column-small{
-    width: var(--firstAndLastCardColumnWidth);
+.card-column-small {
+  width: var(--firstAndLastCardColumnWidth);
 }
 
-.card-column-middle{
-    justify-content: space-around;
-    align-self: center;
-    height: var(--cardMidleColumnsHeight);
-    width: var(--cardMidleColumnsWidth);
+.card-column-middle {
+  justify-content: space-around;
+  align-self: center;
+  height: var(--cardMidleColumnsHeight);
+  width: var(--cardMidleColumnsWidth);
 }
 
-.card-column-medium{
-    justify-content: space-between;
-    align-self: center;
-    height: var(--cardMidleColumnsHeight);
-    width: var(--cardMidleColumnsWidth);
+.card-column-medium {
+  justify-content: space-between;
+  align-self: center;
+  height: var(--cardMidleColumnsHeight);
+  width: var(--cardMidleColumnsWidth);
 }
 
-.Column-reversed{
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
-    width: var(--firstAndLastCardColumnWidth);
+.Column-reversed {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  width: var(--firstAndLastCardColumnWidth);
 }

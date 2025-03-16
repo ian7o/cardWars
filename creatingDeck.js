@@ -16,11 +16,22 @@ const cards = [
 
 const naip = ["ouro", "copa", "paus", "espadas"];
 
-let joao = [];
 let zee = [];
-let tableCards = [];
+let joao = [];
+let battleArea = [];
 let zeeVitories = 0;
 let joaoVitories = 0;
+
+// para criar as cartas
+function createDeck(cards, naip) {
+  let deck = [];
+  for (let i = 0; i < cards.length; i++) {
+    for (let j = 0; j < 1; j++) {
+      deck.push({ card: cards[i], naip: naip[j], value: i + 1 });
+    }
+  }
+  return deck;
+}
 
 function splitDeck(deck) {
   let half = Math.ceil(deck.length / 2);
@@ -50,64 +61,29 @@ function doRounds() {
     zeeVitories < 1000 &&
     joaoVitories < 1000
   ) {
-    tableCards = [];
-    tableCards.push(zee.shift(), joao.shift());
-    console.log("zee throw", tableCards[0]);
-    console.log("joao throw", tableCards[1]);
-    if (tableCards[0] > tableCards[1]) {
-      zee.push(...tableCards);
+    battleArea = [];
+    battleArea.push(zee.shift(), joao.shift());
+    console.log("zee throw", battleArea[0].card);
+    console.log("joao throw", battleArea[1].card);
+    if (battleArea[0].value > battleArea[1].value) {
+      zee.push(...battleArea);
       console.log("zee wins");
       zeeVitories++;
-    } else if (tableCards[1] > tableCards[0]) {
-      joao.push(...tableCards);
+    } else if (battleArea[1].value > battleArea[0].value) {
+      joao.push(...battleArea);
       console.log("joao wins");
       joaoVitories++;
-    } else {
-      console.log("draw");
-      if (zee.length < 4 || joao.length < 4) {
-        if (zee.length < 4 && joao.length < 4) {
-          console.log("no one can do draw so it's a draw");
-          break;
-        } else if (zee.length < 4) {
-          console.log("zee can't do draw so joao wins");
-          break;
-        } else if (joao.length < 4) {
-          console.log("joao can't do draw so zee wins");
-          break;
-        }
-      } else {
-        // Add 3 cards from each player
-        for (let i = 0; i < 3; i++) {
-          tableCards.push(zee.shift());
-          tableCards.push(joao.shift());
-        }
-        // Get the last card from each player for comparison
-        let zeeCard = zee.shift();
-        let joaoCard = joao.shift();
-
-        console.log("zee war card", zeeCard);
-        console.log("joao war card", joaoCard);
-
-        tableCards.push(zeeCard, joaoCard);
-
-        if (zeeCard > joaoCard) {
-          zee.push(...tableCards);
-          console.log("zee wins war");
-          zeeVitories++;
-        } else if (joaoCard > zeeCard) {
-          joao.push(...tableCards);
-          console.log("joao wins war");
-          joaoVitories++;
-        } else {
-          console.log("draw the draw");
-        }
-      }
+    }
+    if (battleArea[1].value === battleArea[0].value) {
+      disputeRound();
     }
 
     //para mostrar o placar
     console.log(`zee Wins: ${zeeVitories} x joao Wins: ${joaoVitories}`);
     console.log(`zee has ${zee.length} cards`);
     console.log(`joao has ${joao.length} cards`);
+    insertCard(battleArea);
+    showscoreboard();
   }
   //para mostrar o vencedor
   if (joaoVitories < zeeVitories) {
@@ -121,97 +97,59 @@ function doRounds() {
   }
 }
 
-splitDeck(
-  shuffleDeck([1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10])
-);
-doRounds();
-
-// para criar as cartas
-function createDeck(cards, naip) {
-  let deck = [];
-  for (let i = 0; i < cards.length; i++) {
-    for (let j = 0; j < naip.length; j++) {
-      deck.push({ card: cards[i], naip: naip[j], value: i + 1 });
-    }
-  }
-  return deck;
-}
-
-//splitDeck(shuffleDeck(createDeck(cards, naip)));
-
-/*function drawRound() {
-  roundHadDrawAndWasPossibleDoDraw = false;
-
-  if(zee.length < 4 || joao.length < 4){
-    if(zee.length < 4){
-     console.log("zee can't do draw so joao wins");
-    }
-    if(joao.length < 4){ 
-    console.log("joao can't do draw so zee wins");
-    }
-  }
-
-
-  if (zee.length < 4 && joao.length < 4) {
-    else if (zee.length < 4 && joao.length < 4) {
+function disputeRound() {
+  console.log("draw");
+  if (zee.length < 4 || joao.length < 4) {
+    if (zee.length < 4 && joao.length < 4) {
       console.log("no one can do draw so it's a draw");
     } else if (zee.length < 4) {
       console.log("zee can't do draw so joao wins");
     } else if (joao.length < 4) {
       console.log("joao can't do draw so zee wins");
     }
-  } else if (zee.length >= 4 && joao.length >= 4) {
-    console.log("roundHadDrawAndWasPossibleDoDraw");
-    roundHadDrawAndWasPossibleDoDraw = true;
-
-    tableCards.push(zee.shift(), joao.shift());
-    tableCards.push(zee.shift(), joao.shift());
-    tableCards.push(zee.shift(), joao.shift());
-
-    if (tableCards[6] > tableCards[7]) {
-      console.log("zee wins");
-      zee.push(
-        tableCards[0],
-        tableCards[1],
-        tableCards[2],
-        tableCards[3],
-        tableCards[4],
-        tableCards[5],
-        tableCards[6],
-        tableCards[7]
-      );
-      zeeVitories++;
-      //compareCards();
+  } else {
+    // Add 3 cards from each player
+    for (let i = 0; i < 3; i++) {
+      battleArea.push(zee.shift());
+      battleArea.push(joao.shift());
     }
+    // Get the last card from each player for comparison
+    let zeeCard = zee.shift();
+    let joaoCard = joao.shift();
 
-    if (tableCards[7] > tableCards[6]) {
-      console.log("joao wins");
-      joao.push(
-        tableCards[0],
-        tableCards[1],
-        tableCards[2],
-        tableCards[3],
-        tableCards[4],
-        tableCards[5],
-        tableCards[6],
-        tableCards[7]
-      );
+    console.log("zee war card", zeeCard);
+    console.log("joao war card", joaoCard);
+
+    battleArea.push(zeeCard, joaoCard);
+
+    if (zeeCard.value > joaoCard.value) {
+      zee.push(...battleArea);
+      console.log("zee wins war");
+      zeeVitories++;
+    } else if (joaoCard.value > zeeCard.value) {
+      joao.push(...battleArea);
+      console.log("joao wins war");
       joaoVitories++;
-      //compareCards();
-    } else if (tableCards[6] === tableCards[7]) {
+    } else {
       console.log("draw the draw");
-      // drawRound();
     }
   }
 }
 
-function insertCard(deck) {
-  let mySuit = document.getElementById("testSuitss");
-  for (let i = 0; i < deck.length; i++) {
-    switch (deck[i]) {
+function showscoreboard() {
+  const scoreboard = document.getElementsByClassName("scoreboard")[0];
+  scoreboard.innerHTML = `Player1:  ${zeeVitories} x Player2:  ${joaoVitories}`;
+}
+
+splitDeck(shuffleDeck(createDeck(cards, naip)));
+doRounds();
+
+function insertCard(cardsArray) {
+  const myBattleAreaDiv = document.getElementsByClassName("battleArea")[0];
+  for (let value of cardsArray) {
+    switch (value.card) {
       case "a":
-        let baseCard =
-          (mySuit.innerHTML = `<div class="heartsuitA cardContainer">
+        myBattleAreaDiv.innerHTML += `<div class="heartsuitA cardContainer">
         <div class="card-column-small">
           <p class="cardNumber">A</p>
           <img class="hearts" src="/images/hearts.png" alt="heart" />
@@ -225,11 +163,11 @@ function insertCard(deck) {
           <p class="cardNumber itensUpsideDown">A</p>
           <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
         </div>
-      </div>`);
+      </div>`;
         break;
 
       case "2":
-        mySuit.innerHTML = `<div class="heartsuit2 cardContainer">
+        myBattleAreaDiv.innerHTML += `<div class="heartsuit2 cardContainer">
         <div class="card-column-small">
           <p class="cardNumber">2</p>
           <img class="hearts" src="/images/hearts.png" alt="heart" />
@@ -249,7 +187,7 @@ function insertCard(deck) {
         break;
 
       case "3":
-        mySuit.innerHTML = `      <div class="heartsuit3 cardContainer">
+        myBattleAreaDiv.innerHTML += `      <div class="heartsuit3 cardContainer">
         <div class="card-column-small">
           <p class="cardNumber">3</p>
           <img class="hearts" src="/images/hearts.png" alt="heart" />
@@ -271,7 +209,7 @@ function insertCard(deck) {
         break;
 
       case "4":
-        mySuit.innerHTML = `      <div class="heartsuit4 cardContainer">
+        myBattleAreaDiv.innerHTML += `      <div class="heartsuit4 cardContainer">
         <div class="card-column-small">
           <p class="cardNumber">4</p>
           <img class="hearts" src="/images/hearts.png" alt="heart" />
@@ -294,7 +232,7 @@ function insertCard(deck) {
         break;
 
       case "5":
-        mySuit.innerHTML = `      <div class="heartsuit5 cardContainer">
+        myBattleAreaDiv.innerHTML += `      <div class="heartsuit5 cardContainer">
         <div class="card-column-small">
           <p class="cardNumber">5</p>
           <img class="hearts" src="/images/hearts.png" alt="heart" />
@@ -319,7 +257,7 @@ function insertCard(deck) {
         break;
 
       case "6":
-        mySuit.innerHTML = `      <div class="heartsuit6 cardContainer">
+        myBattleAreaDiv.innerHTML += `      <div class="heartsuit6 cardContainer">
         <div class="card-column-small">
           <p class="cardNumber">6</p>
           <img class="hearts" src="/images/hearts.png" alt="heart" />
@@ -344,7 +282,7 @@ function insertCard(deck) {
         break;
 
       case "7":
-        mySuit.innerHTML = `      <div class="heartsuit7 cardContainer">
+        myBattleAreaDiv.innerHTML += `      <div class="heartsuit7 cardContainer">
         <div class="card-column-small">
           <p class="cardNumber">7</p>
           <img class="hearts" src="/images/hearts.png" alt="heart" />
@@ -371,7 +309,7 @@ function insertCard(deck) {
         break;
 
       case "8":
-        mySuit.innerHTML = `
+        myBattleAreaDiv.innerHTML += `
       <div class="heartsuit8 cardContainer">
         <div class="card-column-small">
           <p class="cardNumber">8</p><img class="hearts" src="/images/hearts.png" alt="heart" />
@@ -399,7 +337,7 @@ function insertCard(deck) {
         break;
 
       case "9":
-        mySuit.innerHTML = `<div class="heartsuit9 cardContainer">
+        myBattleAreaDiv.innerHTML += `<div class="heartsuit9 cardContainer">
         <div class="card-column-small">
           <p class="cardNumber">9</p><img class="hearts" src="/images/hearts.png" alt="heart" />
         </div>
@@ -427,7 +365,7 @@ function insertCard(deck) {
         break;
 
       case "10":
-        mySuit.innerHTML = `      <div class="heartsuit10 cardContainer">
+        myBattleAreaDiv.innerHTML += `      <div class="heartsuit10 cardContainer">
         <div class="card-column-small">
           <p class="cardNumber">10</p><img class="hearts" src="/images/hearts.png" alt="heart" />
         </div>
@@ -455,7 +393,7 @@ function insertCard(deck) {
         break;
 
       case "Jack":
-        mySuit.innerHTML = `      <div class="heartsuitJack cardContainer">
+        myBattleAreaDiv.innerHTML += `      <div class="heartsuitJack cardContainer">
         <div class="card-column-small">
           <p class="cardNumber">J</p>
           <img class="hearts" src="/images/hearts.png" alt="heart" />
@@ -475,7 +413,7 @@ function insertCard(deck) {
         break;
 
       case "Queen":
-        mySuit.innerHTML = `      <div class="heartsuitQueen cardContainer">
+        myBattleAreaDiv.innerHTML += `      <div class="heartsuitQueen cardContainer">
         <div class="card-column-small">
           <p class="cardNumber">Q</p>
           <img class="hearts" src="/images/hearts.png" alt="heart" />
@@ -495,7 +433,7 @@ function insertCard(deck) {
         break;
 
       case "King":
-        mySuit.innerHTML = `      <div class="heartsuitking cardContainer">
+        myBattleAreaDiv.innerHTML += `      <div class="heartsuitking cardContainer">
         <div class="card-column-small">
           <p class="cardNumber">K</p>
           <img class="hearts" src="/images/hearts.png" alt="heart" />
@@ -518,6 +456,5 @@ function insertCard(deck) {
         break;
     }
   }
+  myBattleAreaDiv.innerHTML = " ";
 }
-
-*/
