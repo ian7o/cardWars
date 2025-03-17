@@ -19,6 +19,34 @@ body {
 .UI {
   display: flex;
   justify-content: center;
+  flex-direction: column;
+}
+
+.showPlayersInfos {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.nextRoundButtonDiv {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+
+.nextRoundButton {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 10px 0;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 10px 0;
 }
 
 .game {
@@ -82,10 +110,10 @@ p.cardNumber {
 }
 
 .cardContainer {
-  padding: 0.5%;
   display: flex;
-  margin: 0.3vw;
   flex-direction: row;
+  padding: 0.5%;
+  margin: 0.3vw;
   background-color: rgb(255, 255, 255);
   border: 3px solid red;
   height: var(--cardHeight);
@@ -130,4 +158,91 @@ img[data-specialHeart="1"] {
   flex-direction: column-reverse;
   align-items: center;
   width: var(--firstAndLastCardColumnWidth);
+}
+
+body {
+  background-color: green;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.menuContainer {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.formMenu {
+  display: flex;
+  flex-direction: column;
+  border: 3px solid red;
+  border-radius: 10px;
+  padding: 30px;
+  background-color: white;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.inputGroup {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+input[type="text"]:focus {
+  border-color: #3498db;
+  outline: none;
+}
+
+.startQuitButtons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+button {
+  flex: 1;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 12px 0;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #202326;
+}
+
+button.quit {
+  background-color: red;
+  margin-left: 15px;
+}
+
+button.quit:hover {
+  background-color: #c0392b;
 }

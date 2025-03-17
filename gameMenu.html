@@ -1,0 +1,44 @@
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="Style.css" />
+    <script src="startingMenuForm.js" defer></script>
+
+    <title>Menu do Jogo</title>
+  </head>
+  <body>
+    <div class="menuContainer">
+      <form class="formMenu">
+        <h1>Start the game</h1>
+
+        <div class="inputGroup">
+          <label for="firstPlayerName">First player name:</label>
+          <input
+            type="text"
+            name="firstPlayerName"
+            id="firstPlayerName"
+            placeholder="Insert the first player name"
+            required
+          />
+        </div>
+
+        <div class="inputGroup">
+          <label for="secondPlayerName">Second player name:</label>
+          <input
+            type="text"
+            name="secondPlayerName"
+            id="secondPlayerName"
+            placeholder="Insert the second player name"
+            required
+          />
+        </div>
+
+        <div class="startQuitButtons">
+          <button type="submit" id="startGame">Start</button>
+          <button type="button" class="quit" id="quitGame">Quit</button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

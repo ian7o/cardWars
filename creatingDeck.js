@@ -14,19 +14,18 @@ const cards = [
   "King",
 ];
 
-const naip = ["ouro", "copa", "paus", "espadas"];
+const naip = ["diamonds", "hearts", "clubs", "spades"];
 
-let zee = [];
-let joao = [];
+let player1 = [];
+let player2 = [];
 let battleArea = [];
-let zeeVitories = 0;
-let joaoVitories = 0;
+let player1Vitories = 0;
+let player2Vitories = 0;
 
-// para criar as cartas
 function createDeck(cards, naip) {
   let deck = [];
   for (let i = 0; i < cards.length; i++) {
-    for (let j = 0; j < 1; j++) {
+    for (let j = 0; j < 4; j++) {
       deck.push({ card: cards[i], naip: naip[j], value: i + 1 });
     }
   }
@@ -36,425 +35,451 @@ function createDeck(cards, naip) {
 function splitDeck(deck) {
   let half = Math.ceil(deck.length / 2);
   console.log(half);
-  zee = deck.slice(0, half);
-  joao = deck.slice(half, deck.length);
+  player1 = deck.slice(0, half);
+  player2 = deck.slice(half, deck.length);
   return {
-    zee,
-    joao,
+    player1,
+    player2,
   };
 }
 
-// para embaralhar as cartas
 function shuffleDeck(deck) {
   for (let i = deck.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1)); // random index including i
+    const j = Math.floor(Math.random() * (i + 1));
     // Troca os elementos
     [deck[i], deck[j]] = [deck[j], deck[i]];
   }
   return deck;
 }
 
-function doRounds() {
+function playRounds(player1, player2) {
   while (
-    zee.length > 0 &&
-    joao.length > 0 &&
-    zeeVitories < 1000 &&
-    joaoVitories < 1000
+    player1.length > 0 &&
+    player2.length > 0 &&
+    player1Vitories < 10 &&
+    player2Vitories < 10
   ) {
-    battleArea = [];
-    battleArea.push(zee.shift(), joao.shift());
-    console.log("zee throw", battleArea[0].card);
-    console.log("joao throw", battleArea[1].card);
+    let battleArea = [];
+    battleArea.push(player1.shift(), player2.shift());
+    console.log("player1 throw", battleArea[0].card);
+    console.log("player2 throw", battleArea[1].card);
+
     if (battleArea[0].value > battleArea[1].value) {
-      zee.push(...battleArea);
-      console.log("zee wins");
-      zeeVitories++;
+      player1.push(...battleArea);
+      console.log("player1 wins");
+      player1Vitories++;
     } else if (battleArea[1].value > battleArea[0].value) {
-      joao.push(...battleArea);
-      console.log("joao wins");
-      joaoVitories++;
-    }
-    if (battleArea[1].value === battleArea[0].value) {
-      disputeRound();
+      player2.push(...battleArea);
+      console.log("player2 wins");
+      player2Vitories++;
+    } else {
+      resolveDraw(player1, player2, battleArea);
     }
 
-    //para mostrar o placar
-    console.log(`zee Wins: ${zeeVitories} x joao Wins: ${joaoVitories}`);
-    console.log(`zee has ${zee.length} cards`);
-    console.log(`joao has ${joao.length} cards`);
-    insertCard(battleArea);
-    showscoreboard();
+    console.log(
+      `player1 Wins: ${player1Vitories} x player2 Wins: ${player2Vitories}`
+    );
+    console.log(`player1 has ${player1.length} cards`);
+    console.log(`player2 has ${player2.length} cards`);
   }
-  //para mostrar o vencedor
-  if (joaoVitories < zeeVitories) {
-    console.log("zee winnnns");
-  }
-  if (joaoVitories > zeeVitories) {
-    console.log("joao winnnns");
-  }
-  if (joaoVitories === zeeVitories) {
+
+  if (player2Vitories < player1Vitories) {
+    console.log("player1 wins");
+  } else if (player2Vitories > player1Vitories) {
+    console.log("player2 wins");
+  } else {
     console.log("draw");
   }
 }
 
-function disputeRound() {
+function resolveDraw(player1, player2, battleArea) {
   console.log("draw");
-  if (zee.length < 4 || joao.length < 4) {
-    if (zee.length < 4 && joao.length < 4) {
+
+  // Verifica se algum jogador não tem cartas suficientes para o desempate
+  if (player1.length < 4 || player2.length < 4) {
+    if (player1.length < 4 && player2.length < 4) {
       console.log("no one can do draw so it's a draw");
-    } else if (zee.length < 4) {
-      console.log("zee can't do draw so joao wins");
-    } else if (joao.length < 4) {
-      console.log("joao can't do draw so zee wins");
+    } else if (player1.length < 4) {
+      console.log("player1 can't do draw so player2 wins");
+      player2.push(...battleArea); // Adiciona as cartas da disputa ao player2
+      player2Vitories++;
+      return;
+    } else if (player2.length < 4) {
+      console.log("player2 can't do draw so player1 wins");
+      player1.push(...battleArea); // Adiciona as cartas da disputa ao player1
+      player1Vitories++;
+      return;
     }
   } else {
-    // Add 3 cards from each player
+    // Adiciona 3 cartas de cada jogador
     for (let i = 0; i < 3; i++) {
-      battleArea.push(zee.shift());
-      battleArea.push(joao.shift());
+      battleArea.push(player1.shift());
+      battleArea.push(player2.shift());
     }
-    // Get the last card from each player for comparison
-    let zeeCard = zee.shift();
-    let joaoCard = joao.shift();
+    // Pega a última carta de cada jogador para comparação
+    let player1Card = player1.shift();
+    let player2Card = player2.shift();
 
-    console.log("zee war card", zeeCard);
-    console.log("joao war card", joaoCard);
+    console.log("player1 war card", player1Card);
+    console.log("player2 war card", player2Card);
 
-    battleArea.push(zeeCard, joaoCard);
+    battleArea.push(player1Card, player2Card);
 
-    if (zeeCard.value > joaoCard.value) {
-      zee.push(...battleArea);
-      console.log("zee wins war");
-      zeeVitories++;
-    } else if (joaoCard.value > zeeCard.value) {
-      joao.push(...battleArea);
-      console.log("joao wins war");
-      joaoVitories++;
+    if (player1Card.value > player2Card.value) {
+      player1.push(...battleArea);
+      console.log("player1 wins war");
+      player1Vitories++;
+    } else if (player2Card.value > player1Card.value) {
+      player2.push(...battleArea);
+      console.log("player2 wins war");
+      player2Vitories++;
     } else {
       console.log("draw the draw");
+      // Se houver um empate novamente
+      resolveDraw(player1, player2, battleArea);
     }
   }
 }
 
 function showscoreboard() {
   const scoreboard = document.getElementsByClassName("scoreboard")[0];
-  scoreboard.innerHTML = `Player1:  ${zeeVitories} x Player2:  ${joaoVitories}`;
+  scoreboard.innerHTML = `Player1:  ${player1Vitories} x Player2:  ${player2Vitories}`;
 }
 
-splitDeck(shuffleDeck(createDeck(cards, naip)));
-doRounds();
+function showPlayersNumberOfCards() {
+  const player1NumberOfCards = document.getElementsByClassName(
+    "player1NumberOfCards"
+  )[0];
+  const player2NumberOfCards = document.getElementsByClassName(
+    "player2NumberOfCards"
+  )[0];
+
+  player1NumberOfCards.innerHTML = `player1 numbers of cards:  ${player1.length}`;
+  player2NumberOfCards.innerHTML = `player2 numbers of cards:  ${player2.length}`;
+}
 
 function insertCard(cardsArray) {
   const myBattleAreaDiv = document.getElementsByClassName("battleArea")[0];
   for (let value of cardsArray) {
+    let cardSuit = value.naip;
+    let suitAlt = value.naip;
+    let suitImage = `/images/${value.naip}.png`;
+
     switch (value.card) {
       case "a":
-        myBattleAreaDiv.innerHTML += `<div class="heartsuitA cardContainer">
-        <div class="card-column-small">
-          <p class="cardNumber">A</p>
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-medium"></div>
-        <div class="card-column-middle">
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-medium"></div>
-        <div class="card-column-small Column-reversed">
-          <p class="cardNumber itensUpsideDown">A</p>
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-      </div>`;
+        myBattleAreaDiv.innerHTML += `<div class="${cardSuit}suitA cardContainer">
+          <div class="card-column-small">
+            <p class="cardNumber">A</p>
+            <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+          </div>
+          <div class="card-column-medium"></div>
+          <div class="card-column-middle">
+            <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+          </div>
+          <div class="card-column-medium"></div>
+          <div class="card-column-small Column-reversed">
+            <p class="cardNumber itensUpsideDown">A</p>
+            <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+          </div>
+        </div>`;
         break;
 
       case "2":
-        myBattleAreaDiv.innerHTML += `<div class="heartsuit2 cardContainer">
-        <div class="card-column-small">
-          <p class="cardNumber">2</p>
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-medium"></div>
-        <div class="card-column-middle">
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-medium"></div>
-        <div class="card-column-small Column-reversed">
-          <p class="cardNumber itensUpsideDown">2</p>
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-      </div>`;
-
+        myBattleAreaDiv.innerHTML += `<div class="${cardSuit}suit2 cardContainer">
+          <div class="card-column-small">
+            <p class="cardNumber">2</p>
+            <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+          </div>
+          <div class="card-column-medium"></div>
+          <div class="card-column-middle">
+            <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+            <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+          </div>
+          <div class="card-column-medium"></div>
+          <div class="card-column-small Column-reversed">
+            <p class="cardNumber itensUpsideDown">2</p>
+            <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+          </div>
+        </div>`;
         break;
 
       case "3":
-        myBattleAreaDiv.innerHTML += `      <div class="heartsuit3 cardContainer">
-        <div class="card-column-small">
-          <p class="cardNumber">3</p>
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-        </div>
-        
-        <div class="card-column-medium"></div>
-        <div class="card-column-middle">
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-medium"></div>
-        <div class="card-column-small Column-reversed">
-          <p class="cardNumber itensUpsideDown">3</p>
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-      </div>`;
-
+        myBattleAreaDiv.innerHTML += `<div class="${cardSuit}suit3 cardContainer">
+          <div class="card-column-small">
+            <p class="cardNumber">3</p>
+            <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+          </div>
+          <div class="card-column-medium"></div>
+          <div class="card-column-middle">
+            <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+            <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+            <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+          </div>
+          <div class="card-column-medium"></div>
+          <div class="card-column-small Column-reversed">
+            <p class="cardNumber itensUpsideDown">3</p>
+            <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+          </div>
+        </div>`;
         break;
 
       case "4":
-        myBattleAreaDiv.innerHTML += `      <div class="heartsuit4 cardContainer">
-        <div class="card-column-small">
-          <p class="cardNumber">4</p>
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-medium">
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-middle"></div>
-        <div class="card-column-medium">
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-small Column-reversed">
-          <p class="cardNumber itensUpsideDown">4</p>
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-      </div>`;
-
+        myBattleAreaDiv.innerHTML += `<div class="${cardSuit}suit4 cardContainer">
+            <div class="card-column-small">
+              <p class="cardNumber">4</p>
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+            <div class="card-column-medium">
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+              <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+            <div class="card-column-middle"></div>
+            <div class="card-column-medium">
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+              <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+            <div class="card-column-small Column-reversed">
+              <p class="cardNumber itensUpsideDown">4</p>
+              <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+          </div>`;
         break;
 
       case "5":
-        myBattleAreaDiv.innerHTML += `      <div class="heartsuit5 cardContainer">
-        <div class="card-column-small">
-          <p class="cardNumber">5</p>
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-medium">
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-middle">
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-medium">
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-small Column-reversed">
-          <p class="cardNumber itensUpsideDown">5</p>
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-      </div>`;
-
+        myBattleAreaDiv.innerHTML += `<div class="${cardSuit}suit5 cardContainer">
+            <div class="card-column-small">
+              <p class="cardNumber">5</p>
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+            <div class="card-column-medium">
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+              <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+            <div class="card-column-middle">
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+            <div class="card-column-medium">
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+              <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+            <div class="card-column-small Column-reversed">
+              <p class="cardNumber itensUpsideDown">5</p>
+              <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+          </div>`;
         break;
 
       case "6":
-        myBattleAreaDiv.innerHTML += `      <div class="heartsuit6 cardContainer">
-        <div class="card-column-small">
-          <p class="cardNumber">6</p>
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-medium">
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-middle"></div>
-        <div class="card-column-medium">
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-small Column-reversed">
-          <p class="cardNumber itensUpsideDown">6</p>
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-      </div>`;
-
+        myBattleAreaDiv.innerHTML += `<div class="${cardSuit}suit6 cardContainer">
+            <div class="card-column-small">
+              <p class="cardNumber">6</p>
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+            <div class="card-column-medium">
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+              <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+            <div class="card-column-middle"></div>
+            <div class="card-column-medium">
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+              <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+            <div class="card-column-small Column-reversed">
+              <p class="cardNumber itensUpsideDown">6</p>
+              <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+          </div>`;
         break;
 
       case "7":
-        myBattleAreaDiv.innerHTML += `      <div class="heartsuit7 cardContainer">
-        <div class="card-column-small">
-          <p class="cardNumber">7</p>
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-medium">
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-middle">
-          <img class="hearts" data-specialHeart="1" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-medium">
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-small Column-reversed">
-          <p class="cardNumber itensUpsideDown">7</p>
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-      </div>`;
-
+        myBattleAreaDiv.innerHTML += `<div class="${cardSuit}suit7 cardContainer">
+            <div class="card-column-small">
+              <p class="cardNumber">7</p>
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+            <div class="card-column-medium">
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+              <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+            <div class="card-column-middle">
+              <img class="${cardSuit}" data-specialHeart="1" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+            <div class="card-column-medium">
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+              <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+            <div class="card-column-small Column-reversed">
+              <p class="cardNumber itensUpsideDown">7</p>
+              <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+          </div>`;
         break;
 
       case "8":
-        myBattleAreaDiv.innerHTML += `
-      <div class="heartsuit8 cardContainer">
-        <div class="card-column-small">
-          <p class="cardNumber">8</p><img class="hearts" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-medium">
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-middle">
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-medium">
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-small Column-reversed">
-          <p class="cardNumber itensUpsideDown">8</p>
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-      </div>`;
-
+        myBattleAreaDiv.innerHTML += `<div class="${cardSuit}suit8 cardContainer">
+            <div class="card-column-small">
+              <p class="cardNumber">8</p>
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+            <div class="card-column-medium">
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+              <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+            <div class="card-column-middle">
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+              <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+            <div class="card-column-medium">
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+              <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+            <div class="card-column-small Column-reversed">
+              <p class="cardNumber itensUpsideDown">8</p>
+              <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+          </div>`;
         break;
 
       case "9":
-        myBattleAreaDiv.innerHTML += `<div class="heartsuit9 cardContainer">
-        <div class="card-column-small">
-          <p class="cardNumber">9</p><img class="hearts" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-medium">
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-middle">
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-medium">
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-small Column-reversed">
-          <p class="cardNumber itensUpsideDown">9</p>
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-      </div>`;
-
+        myBattleAreaDiv.innerHTML += `<div class="${cardSuit}suit9 cardContainer">
+            <div class="card-column-small">
+              <p class="cardNumber">9</p>
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+            <div class="card-column-medium">
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+              <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+              <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+            <div class="card-column-middle">
+              <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+            <div class="card-column-medium">
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+              <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+              <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+            <div class="card-column-small Column-reversed">
+              <p class="cardNumber itensUpsideDown">9</p>
+              <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+          </div>`;
         break;
 
       case "10":
-        myBattleAreaDiv.innerHTML += `      <div class="heartsuit10 cardContainer">
-        <div class="card-column-small">
-          <p class="cardNumber">10</p><img class="hearts" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-medium">
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-middle">
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-medium">
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-small Column-reversed">
-          <p class="cardNumber itensUpsideDown">10</p>  <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-      </div>`;
-
+        myBattleAreaDiv.innerHTML += `<div class="${cardSuit}suit10 cardContainer">
+            <div class="card-column-small">
+              <p class="cardNumber">10</p>
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+            <div class="card-column-medium">
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+              <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+              <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+            <div class="card-column-middle">
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+              <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+            <div class="card-column-medium">
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+              <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+              <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+              <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+            <div class="card-column-small Column-reversed">
+              <p class="cardNumber itensUpsideDown">10</p>
+              <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+            </div>
+          </div>`;
         break;
 
       case "Jack":
-        myBattleAreaDiv.innerHTML += `      <div class="heartsuitJack cardContainer">
-        <div class="card-column-small">
-          <p class="cardNumber">J</p>
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-medium"></div>
-        <div class="card-column-middle">
-          <img class="jack" src="/images/jack.png" alt="heart" />
-          <img class="jack itensUpsideDown" src="/images/jack.png" alt="heart" />
-        </div>
-        <div class="card-column-medium"></div>
-        <div class="card-column-small Column-reversed">
-          <p class="cardNumber itensUpsideDown">J</p>
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-      </div>`;
-
+        myBattleAreaDiv.innerHTML += `<div class="${cardSuit}suitJack cardContainer">
+          <div class="card-column-small">
+            <p class="cardNumber">J</p>
+            <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+          </div>
+          <div class="card-column-medium"></div>
+          <div class="card-column-middle">
+            <img class="jack" src="/images/jack.png" alt="jack" />
+            <img class="jack itensUpsideDown" src="/images/jack.png" alt="jack" />
+          </div>
+          <div class="card-column-medium"></div>
+          <div class="card-column-small Column-reversed">
+            <p class="cardNumber itensUpsideDown">J</p>
+            <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+          </div>
+        </div>`;
         break;
 
       case "Queen":
-        myBattleAreaDiv.innerHTML += `      <div class="heartsuitQueen cardContainer">
-        <div class="card-column-small">
-          <p class="cardNumber">Q</p>
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-medium"></div>
-        <div class="card-column-middle">
-          <img class="queen" src="/images/queen.png" alt="heart" />
-          <img class="queen itensUpsideDown" src="/images/queen.png" alt="heart" />
-        </div>
-        <div class="card-column-medium"></div>
-        <div class="card-column-small Column-reversed">
-          <p class="cardNumber itensUpsideDown">Q</p>
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-      </div>`;
-
+        myBattleAreaDiv.innerHTML += `<div class="${cardSuit}suitQueen cardContainer">
+          <div class="card-column-small">
+            <p class="cardNumber">Q</p>
+            <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+          </div>
+          <div class="card-column-medium"></div>
+          <div class="card-column-middle">
+            <img class="queen" src="/images/queen.png" alt="queen" />
+            <img class="queen itensUpsideDown" src="/images/queen.png" alt="queen" />
+          </div>
+          <div class="card-column-medium"></div>
+          <div class="card-column-small Column-reversed">
+            <p class="cardNumber itensUpsideDown">Q</p>
+            <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+          </div>
+        </div>`;
         break;
 
       case "King":
-        myBattleAreaDiv.innerHTML += `      <div class="heartsuitking cardContainer">
-        <div class="card-column-small">
-          <p class="cardNumber">K</p>
-          <img class="hearts" src="/images/hearts.png" alt="heart" />
-        </div>
-        <div class="card-column-medium"></div>
-        <div class="card-column-middle">
-          <img class="king" src="/images/king-cópia.png" alt="heart" />
-          <img class="king itensUpsideDown" src="/images/king-cópia.png" alt="heart" />
-        </div>
-        <div class="card-column-medium"></div>
-        <div class="card-column-small Column-reversed">
-          <p class="cardNumber itensUpsideDown">K</p>
-          <img class="hearts itensUpsideDown" src="/images/hearts.png" alt="heart" />
-        </div>
-      </div>`;
-
+        myBattleAreaDiv.innerHTML += `<div class="${cardSuit}suitking cardContainer">
+          <div class="card-column-small">
+            <p class="cardNumber">K</p>
+            <img class="${cardSuit}" src="${suitImage}" alt="${suitAlt}" />
+          </div>
+          <div class="card-column-medium"></div>
+          <div class="card-column-middle">
+            <img class="king" src="/images/king-cópia.png" alt="king" />
+            <img class="king itensUpsideDown" src="/images/king-cópia.png" alt="king" />
+          </div>
+          <div class="card-column-medium"></div>
+          <div class="card-column-small Column-reversed">
+            <p class="cardNumber itensUpsideDown">K</p>
+            <img class="${cardSuit} itensUpsideDown" src="${suitImage}" alt="${suitAlt}" />
+          </div>
+        </div>`;
         break;
 
       default:
         break;
     }
   }
-  myBattleAreaDiv.innerHTML = " ";
+
+  //myBattleAreaDiv.innerHTML = " ";
 }
+
+/*
+function showCards(){
+  const nextRoundButton = document.getElementsByClassName("nextRoundButton")[0];
+
+  nextRoundButton.addEventListener("click", function)
+}
+  */
+
+splitDeck(shuffleDeck(createDeck(cards, naip)));
+
+showPlayersNumberOfCards();
+
+showscoreboard();
+
+playRounds(player1, player2);

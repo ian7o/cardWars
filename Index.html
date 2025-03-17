@@ -8,7 +8,7 @@
     <title>cartas</title>
   </head>
   <body>
-        <!--
+    <!--
     <div class="heartsuit">
       <div class="heartsuit10 cardContainer">
         <div class="card-column-small">
@@ -1078,73 +1078,79 @@
       
     </div> 
   </div>
-  --> 
+  -->
 
-  
-  <div class="gameTable">
-    <div class="UI">
-      <div class="scoreboard"></div>
-    </div>
-    <div class="game">
-      <div class="firstPlayerCards">
-        <div class="spadesSuit">
-          <div class="spadesuitking cardContainer">
-            <div class="card-column-small">
-              <p class="cardNumber">K</p>
-              <img class="spades" src="/images/spades.png" alt="spades" />
+    <div class="gameTable">
+      <div class="UI">
+        <div class="showPlayersInfos">
+          <div class="player1NumberOfCards"></div>
+          <div class="scoreboard"></div>
+          <div class="player2NumberOfCards"></div>
+        </div>
+        <div class="nextRoundButtonDiv">
+          <button class="nextRoundButton">Next Round</button>
+        </div>
+      </div>
+      <div class="game">
+        <div class="firstPlayerCards">
+          <div class="spadesSuit">
+            <div class="spadesuitking cardContainer">
+              <div class="card-column-small">
+                <p class="cardNumber">K</p>
+                <img class="spades" src="/images/spades.png" alt="spades" />
+              </div>
+              <div class="card-column-medium"></div>
+              <div class="card-column-middle">
+                <img class="king" src="/images/king-cópia.png" alt="spades" />
+                <img
+                  class="king itensUpsideDown"
+                  src="/images/king-cópia.png"
+                  alt="spades"
+                />
+              </div>
+              <div class="card-column-medium"></div>
+              <div class="card-column-small Column-reversed">
+                <p class="cardNumber itensUpsideDown">K</p>
+                <img
+                  class="spades itensUpsideDown"
+                  src="/images/spades.png"
+                  alt="spades"
+                />
+              </div>
             </div>
-            <div class="card-column-medium"></div>
-            <div class="card-column-middle">
-              <img class="king" src="/images/king-cópia.png" alt="spades" />
-              <img
-                class="king itensUpsideDown"
-                src="/images/king-cópia.png"
-                alt="spades"
-              />
-            </div>
-            <div class="card-column-medium"></div>
-            <div class="card-column-small Column-reversed">
-              <p class="cardNumber itensUpsideDown">K</p>
-              <img
-                class="spades itensUpsideDown"
-                src="/images/spades.png"
-                alt="spades"
-              />
+          </div>
+        </div>
+
+        <div class="battleArea"></div>
+        <div class="secondPlayerCards">
+          <div class="spadesSuit">
+            <div class="spadesuitQueen cardContainer">
+              <div class="card-column-small">
+                <p class="cardNumber">Q</p>
+                <img class="spades" src="/images/spades.png" alt="spades" />
+              </div>
+              <div class="card-column-medium"></div>
+              <div class="card-column-middle">
+                <img class="queen" src="/images/queen.png" alt="spades" />
+                <img
+                  class="queen itensUpsideDown"
+                  src="/images/queen.png"
+                  alt="spades"
+                />
+              </div>
+              <div class="card-column-medium"></div>
+              <div class="card-column-small Column-reversed">
+                <p class="cardNumber itensUpsideDown">Q</p>
+                <img
+                  class="spades itensUpsideDown"
+                  src="/images/spades.png"
+                  alt="spades"
+                />
+              </div>
             </div>
           </div>
         </div>
       </div>
-
-      <div class="battleArea"></div>
-      <div class="secondPlayerCards">
-        <div class="spadesSuit">
-          <div class="spadesuitQueen cardContainer">
-            <div class="card-column-small">
-              <p class="cardNumber">Q</p>
-              <img class="spades" src="/images/spades.png" alt="spades" />
-            </div>
-            <div class="card-column-medium"></div>
-            <div class="card-column-middle">
-              <img class="queen" src="/images/queen.png" alt="spades" />
-              <img
-                class="queen itensUpsideDown"
-                src="/images/queen.png"
-                alt="spades"
-              />
-            </div>
-            <div class="card-column-medium"></div>
-            <div class="card-column-small Column-reversed">
-              <p class="cardNumber itensUpsideDown">Q</p>
-              <img
-                class="spades itensUpsideDown"
-                src="/images/spades.png"
-                alt="spades"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
   </body>
 </html>
