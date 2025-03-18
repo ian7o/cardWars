@@ -54,7 +54,7 @@ function shuffleDeck(deck) {
 
 let gameActive = true;
 function playRounds(player1, player2) {
-  if (gameActive) {
+  if (gameActive && player1.length>0 && player2.length>0) {
     let battleArea = [];
     clearTable(battleArea);
     battleArea.push(player1.shift(), player2.shift());
@@ -77,31 +77,33 @@ function playRounds(player1, player2) {
       `player1 Wins: ${player1Vitories} x player2 Wins: ${player2Vitories}`
     );
 
-    console.log(`player1 has ${player1.length} cards`);
-    console.log(`player2 has ${player2.length} cards`);
     //exibe os elementos na tela
     showscoreboard();
-    showPlayersNumberOfCards();
+    showPlayersNumberOfCards(player1, player2);
     insertCard(battleArea);
+    //mostra no 
+    showWinnerOfGame();
+    //apenas em console depois do jogo
+    showWinnerInConsole();
   }
-  //exibe na tela
-  showWinnerOfGame();
-  //apenas em console depois do jogo
-  showWinnerInConsole();
 }
 
+let showWhoCantDraw;
 function resolveDraw(player1, player2, battleArea) {
   console.log("draw");
   if (player1.length < 4 || player2.length < 4) {
     if (player1.length < 4 && player2.length < 4) {
-      console.log("no one can do draw so it's a draw");
+      showWhoCantDraw = `no one can do draw so it's a draw`;
+      console.log(showWhoCantDraw);
       return (gameActive = false);
     } else if (player1.length < 4) {
-      console.log("player1 can't do draw so player2 wins");
+      showWhoCantDraw = `player1 can't do draw so player2 wins`;
+      console.log(showPlayersNumberOfCards(player1, player2));
       return (gameActive = false);
     } else if (player2.length < 4) {
-      console.log("player2 can't do draw so player1 wins");
-      return;
+      showWhoCantDraw = `player2 can't do draw so player1 wins`;
+      console.log(showWhoCantDraw);
+      return (gameActive = false);
     }
   } else {
     // Adiciona 3 cartas de cada jogador
@@ -149,17 +151,23 @@ function showscoreboard() {
 
 function showWinnerOfGame() {
   const scoreboard = document.getElementsByClassName("scoreboard")[0];
-  scoreboard.innerHTML = `Player1:  ${player1Vitories} x Player2:  ${player2Vitories}`;
-  if (player2Vitories < player1Vitories) {
-    scoreboard.innerHTML = `player1 wins the game`;
-  } else if (player2Vitories > player1Vitories) {
-    scoreboard.innerHTML = `player2 wins the game`;
+  if (gameActive) {
+    scoreboard.innerHTML = `Player1:  ${player1Vitories} x Player2:  ${player2Vitories}`;
+    
+    if (player2Vitories < player1Vitories) {
+      scoreboard.innerHTML = `player1 wins the game`;
+    } else if (player2Vitories > player1Vitories) {
+      scoreboard.innerHTML = `player2 wins the game`;
+    } else {
+      scoreboard.innerHTML = `DRAW`;
+    }
+    scoreboard.innerHTML = `Player1:  ${player1Vitories} x Player2:  ${player2Vitories}`;
+    //quando o jogo tiver um empate e alguem nao conseguir desempatar a pessoa(s) mostra quem nao conseguiu fazer o desempate   
   } else {
-    scoreboard.innerHTML = `DRAW`;
+    scoreboard.innerHTML = showWhoCantDraw;
   }
 }
-
-function showPlayersNumberOfCards() {
+function showPlayersNumberOfCards(player1, player2) {
   const player1NumberOfCards = document.getElementsByClassName(
     "player1NumberOfCards"
   )[0];
@@ -483,30 +491,7 @@ function clickForNextRound() {
   const nextRoundButton = document.getElementsByClassName("nextRoundButton")[0];
 
   nextRoundButton.addEventListener("click", function () {
-    playRounds(
-      [
-        { card: cards[0], naip: naip[0], value: 1 },
-        { card: cards[0], naip: naip[0], value: 1 },
-        { card: cards[0], naip: naip[0], value: 1 },
-        { card: cards[0], naip: naip[0], value: 1 },
-        { card: cards[0], naip: naip[0], value: 1 },
-        { card: cards[0], naip: naip[0], value: 1 },
-        { card: cards[0], naip: naip[0], value: 1 },
-        { card: cards[0], naip: naip[0], value: 1 },
-        { card: cards[0], naip: naip[0], value: 1 },
-      ],
-      [
-        { card: cards[0], naip: naip[0], value: 1 },
-        { card: cards[0], naip: naip[0], value: 1 },
-        { card: cards[0], naip: naip[0], value: 1 },
-        { card: cards[0], naip: naip[0], value: 1 },
-        { card: cards[0], naip: naip[0], value: 1 },
-        { card: cards[0], naip: naip[0], value: 1 },
-        { card: cards[0], naip: naip[0], value: 1 },
-        { card: cards[0], naip: naip[0], value: 1 },
-        { card: cards[0], naip: naip[0], value: 1 },
-      ]
-    );
+    playRounds(player1, player2);
   });
 }
 
@@ -518,6 +503,4 @@ function clearTable(battleArea) {
 
 clickForNextRound();
 
-//splitDeck(shuffleDeck(createDeck(cards, naip)));
-
-showPlayersNumberOfCards();
+splitDeck(shuffleDeck(createDeck(cards, naip)));

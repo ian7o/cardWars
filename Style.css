@@ -31,6 +31,7 @@ body {
   flex-direction: row;
   gap: 10px;
   justify-content: space-around;
+  color: white;
 }
 
 .nextRoundButtonDiv {
@@ -125,6 +126,13 @@ p.cardNumber {
   height: var(--cardHeight);
   width: var(--cardWidth);
   border-radius: 5%;
+}
+
+.backCard {
+  display: flex;
+  height: var(--cardMidleColumnsHeight);
+  width: calc(var(--cardWidth) * 1.2);
+  justify-content: center;
 }
 
 img[data-specialHeart="1"] {
