@@ -1,100 +1,255 @@
-:root{
-    /*
-    antes 15
-    e 9
-    */
-    --cartaHeight: 10vw;
-    --cartaWidth: 6vw;
-    --firstAndLastCardColumnWidth:12.5%;
-    --cardMidleColumns: 25%;
-    --cardMidleColumnsHeight:90%;
+:root {
+  --cardHeight: 6.6vw;
+  --cardWidth: 4vw;
+  --firstAndLastCardColumnWidth: 12.5%;
+  --cardMidleColumnsWidth: 25%;
+  --cardMidleColumnsHeight: 90%;
 }
 
-p.cardNumber{
-    font-size: calc(var(--cartaWidth) / 6);
-    color: red;
-    margin: 0;
+body {
+  background-color: rgb(22, 72, 22);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gameTable {
+  margin: 20vw auto auto auto;
+  border: 3px solid red;
+  width: fit-content;
+  padding: 2%;
+}
+
+.UI {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.showPlayersInfos {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: space-around;
+  color: white;
+}
+
+.nextRoundButtonDiv {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+
+.nextRoundButton {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 10px 0;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 10px 0;
+}
+
+.game {
+  display: flex;
+  flex-direction: row;
+  padding: 5vw 1vw 1vw 1vw;
+  justify-content: space-around;
+}
+
+p.cardNumber {
+  font-size: calc(var(--cardWidth) / 6);
+  color: red;
+  margin: 0;
+}
+
+.hearts,
+.diamonds,
+.clubs,
+.spades {
+  width: 90%;
+}
+
+.king {
+  width: 190%;
+}
+
+.queen {
+  width: 300%;
+}
+
+.jack {
+  width: 350%;
+}
+
+.itensUpsideDown {
+  transform: rotate(180deg);
+}
+
+.heartsuit,
+.diamondSuit,
+.clubsSuit,
+.spadesSuit,
+.battleArea {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.firstPlayerCards,
+.battleArea,
+.secondPlayerCards {
+  border: 3px solid white;
+  height: fit-content;
+}
+
+.battleArea {
+  margin-left: 10vw;
+  margin-right: 10vw;
+  min-height: calc(var(--cardHeight));
+  max-height: fit-content;
+  width: calc(var(--cardWidth) * 2.9);
+  justify-content: center;
+}
+
+.cardContainer {
+  display: flex;
+  flex-direction: row;
+  padding: 0.5%;
+  margin: 0.3vw;
+  background-color: rgb(255, 255, 255);
+  border: 3px solid red;
+  height: var(--cardHeight);
+  width: var(--cardWidth);
+  border-radius: 5%;
 }
 
 
-.hearts{
-width: 90%;
+
+.backCard {
+  display: flex;
+  height: var(--cardMidleColumnsHeight);
+  width: calc(var(--cardWidth) * 1.2);
+  justify-content: center;
 }
 
-.itensUpsideDown{
-    transform: rotate(180deg);
+img[data-specialHeart="1"] {
+  position: relative;
+  bottom: 25%;
 }
 
-.heartsuitSection{
-    display: flex;
-    flex-wrap: wrap;
+.card-column-small,
+.card-column-medium,
+.card-column-middle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: var(--firstAndLastCardColumnWidth);
 }
 
-.cardContainer{
-    padding: 1%;
-    display: flex;
-    margin: 0.3vw;
-    flex-direction: row;
-    background-color: rgb(255, 255, 255);
-    border: 3px solid red; 
-    height: var(--cartaHeight);
-    width: var(--cartaWidth);
-    border-radius: 5%;
+.card-column-small {
+  width: var(--firstAndLastCardColumnWidth);
 }
 
-
-
-.firstColumn{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: var(--cartaHeight);
-    width: var(--firstAndLastCardColumnWidth);
+.card-column-middle {
+  justify-content: space-around;
+  align-self: center;
+  height: var(--cardMidleColumnsHeight);
+  width: var(--cardMidleColumnsWidth);
 }
 
-.secndColumn{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    align-self: center;
-    height: var(--cardMidleColumnsHeight);
-    width: var(--cardMidleColumns);
+.card-column-medium {
+  justify-content: space-between;
+  align-self: center;
+  height: var(--cardMidleColumnsHeight);
+  width: var(--cardMidleColumnsWidth);
 }
 
-.thirdColumn{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-    align-self: center;
-    height: var(--cardMidleColumnsHeight);
-    width: var(--cardMidleColumns);
+.Column-reversed {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  width: var(--firstAndLastCardColumnWidth);
 }
 
-
-img[data-specialHeart="1"]{
-    position: relative;
-    top: 15%;
+.menuContainer {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
 }
 
-img[data-specialHeart="2"]{
-    position: relative;
-    bottom: 25%;
+.formMenu {
+  display: flex;
+  flex-direction: column;
+  border: 3px solid red;
+  border-radius: 10px;
+  padding: 30px;
+  background-color: white;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
-.fourtColumn{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    align-self: center;
-    height: var(--cardMidleColumnsHeight);
-    width: var(--cardMidleColumns);
+h1 {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 20px;
 }
-.fifthColumn{
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
-    width: var(--firstAndLastCardColumnWidth);
+
+.inputGroup {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+input[type="text"]:focus {
+  border-color: #3498db;
+  outline: none;
+}
+
+.startQuitButtons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+button {
+  flex: 1;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 12px 0;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #202326;
+}
+
+button.quit {
+  background-color: red;
+  margin-left: 15px;
+}
+
+button.quit:hover {
+  background-color: #c0392b;
 }
